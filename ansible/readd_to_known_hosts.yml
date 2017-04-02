@@ -1,0 +1,14 @@
+---
+
+- name: Remove any entry of this instance from known_hosts
+  known_hosts:
+    path: ~/.ssh/known_hosts
+    name: "{{ FLOATING_IP }}"
+    state: absent
+
+- name: Add this instance to known_hosts
+  known_hosts:
+    path: ~/.ssh/known_hosts
+    key: "{{ lookup('pipe', 'ssh-keyscan -t rsa {{ FLOATING_IP }}') }}"
+    name: "{{ FLOATING_IP }}"
+    state: present

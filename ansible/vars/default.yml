@@ -1,0 +1,6 @@
+# Defaults. Encrypted values are stored in vault file `default_vault.yml`
+IMAGE: "{{ IMAGE_ENC }}"
+FLAVOR: "{{ FLAVOR_ENC }}"
+NETWORK: "{{ NETWORK_ENC }}"
+KEY_NAME: "{{ KEY_NAME_ENC }}"
+FLOATING_IP: "{{ FLOATING_IP_ENC }}"

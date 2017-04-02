@@ -1,0 +1,19 @@
+---
+
+- name: "Launching instance: {{ instance_name }}"
+  os_server:
+    name: "{{ instance_name }}"
+    state: present
+    wait: yes
+    image: "{{ IMAGE }}"
+    endpoint_type: "internal"
+    flavor: "{{ FLAVOR }}"
+    key_name: "{{ KEY_NAME }}"
+    network: "{{ NETWORK }}"
+    floating_ips:
+      - "{{ FLOATING_IP }}"
+  register: server
+
+- name: Launched instance public IP
+  debug:
+    var: server.server.public_v4

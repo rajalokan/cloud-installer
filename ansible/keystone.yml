@@ -1,0 +1,8 @@
+---
+
+# Run playbooks
+- name: "keystone_all: Running roles: keystone"
+  hosts: keystone_all
+  roles:
+    - { role: ansible_role_dotfiles }
+    - { role: os_keystone, tags: ["os_keystone"], become: yes }

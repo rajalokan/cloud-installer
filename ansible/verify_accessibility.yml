@@ -1,0 +1,10 @@
+---
+- name: "{{ instance_name }} : Verify ssh access"
+  hosts: "{{ instance_name }}"
+  gather_facts: no
+  tasks:
+    - name: "Try to login to the instance: {{ instance_name }}"
+      raw: "/bin/ls"
+      retries: 5
+      delay: 10
+      ignore_errors: true

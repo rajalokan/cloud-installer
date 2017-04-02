@@ -1,0 +1,7 @@
+---
+
+# Run playbooks
+- name: "ney11: Running roles: dotfiles"
+  hosts: ney11
+  roles:
+    - { role: ansible_role_dotfiles }

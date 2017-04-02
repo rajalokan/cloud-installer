@@ -1,0 +1,15 @@
+- name: rajalokan.dotfiles
+  src: https://github.com/rajalokan/dotfiles.git
+  version: master
+
+- name: os_keystone
+  src: https://github.com/openstack/openstack-ansible-os_keystone.git
+  version: master
+
+- name: pip_install
+  src: https://github.com/openstack/openstack-ansible-pip_install.git
+  version: master
+
+- name: apt_package_pinning
+  src: https://github.com/openstack/openstack-ansible-apt_package_pinning.git
+  version: master

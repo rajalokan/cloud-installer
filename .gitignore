@@ -1,0 +1,5 @@
+*-openrc.sh
+*.retry
+Pipfile
+Pipfile.lock
+ansible/inventory

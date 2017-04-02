@@ -1,0 +1,7 @@
+---
+
+# Run playbooks
+- name: "playbox: Running dotfiles"
+  hosts: playbox
+  roles:
+    - { role: ansible_role_dotfiles }
