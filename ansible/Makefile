@@ -1,16 +1,18 @@
 
 boot_playbox:
-	ansible-playbook -e action="boot" playbox.yml
+	ansible-playbook -e instance_name="playbox"  --vault-password-file ~/.vault_password --tags="boot" boot.yml
 provision_playbox:
-	ansible-playbook -e
+	ansible-playbook -e instance_name="playbox" --vault-password-file ~/.vault_password --tags="provision" boot.yml
 delete_playbox:
-	ansible-playbook -e action="delete" playbox.yml
+	ansible-playbook -e instance_name="playbox" delete.yml
 
 
 boot_keystone:
-	ansible-playbook -e action="boot" keystone.yml
+	ansible-playbook -e instance_name="keystone" --vault-password-file ~/.vault_password --tags="boot" boot.yml
+provision_keystone:
+	ansible-playbook -e instance_name="keystone" --vault-password-file ~/.vault_password --tags "provision" boot.yml
 delete_keystone:
-	ansible-playbook -e action="delete" keystone.yml
+	ansible-playbook -e instance_name="keystone" delete.yml
 
 
 boot_ney11:
