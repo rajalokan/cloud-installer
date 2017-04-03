@@ -5,7 +5,10 @@
     - block:
       - include_vars: vars/default.yml
       - include_vars: vars/default_vault.yml
+      - include_vars: vars/{{ instance_name }}.yml
+        ignore_errors: true
       - include_vars: vars/{{ instance_name }}_vault.yml
+        ignore_errors: true
       tags: boot
   tasks:
     - block:

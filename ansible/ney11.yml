@@ -15,4 +15,6 @@
     - name: Clone cloud--installer
       git:
         repo: https://github.com/rajalokan/cloud-installer.git
-        dest: /opt/cloud--installer
+        dest: /opt/cloud-installer
+
+    # TODO: setup venv for cloud-installer
