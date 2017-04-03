@@ -2,7 +2,7 @@
 
 - name: add the server to ansible inventory
   add_host:
-    hostname: "{{ server.server.public_v4 }}"
+    hostname: "{{ SERVER_IP }}"
     groups: "{{ instance_name }}"
     ansible_ssh_private_key_file: "{{ PRIVATE_KEY_FILE }}"
     ansible_ssh_user: ubuntu

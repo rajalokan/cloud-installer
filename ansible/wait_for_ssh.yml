@@ -2,7 +2,7 @@
 
 - name: Wait for instance to finish booting and ssh to be up
   wait_for:
-    host="{{ FLOATING_IP }}"
+    host="{{ SERVER_IP }}"
     search_regex=OpenSSH
     port=22
     delay=10

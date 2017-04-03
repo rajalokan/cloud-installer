@@ -1,7 +1,7 @@
 ---
 
 - block:
-    - name: "Launching instance: {{ instance_name }} with floating ip {{ FLOATING_IP }}"
+    - name: "Launching instance `{{ instance_name }}` with floating ip {{ FLOATING_IP }}"
       os_server:
         name: "{{ instance_name }}"
         state: present
@@ -15,13 +15,16 @@
           - "{{ FLOATING_IP }}"
       register: server
 
-    - name: Launched instance public IP
-      debug:
+    - debug:
         var: server.server.public_v4
-  when: FLOATING_IP is defined
+
+    - name: Set SERVER_IP variable
+      set_fact:
+        SERVER_IP: "{{ server.server.public_v4 }}"
+  when: FLOATING_IP != "None"
 
 - block:
-    - name: "Launching instance: {{ instance_name }} with private IP in network {{ NETWORK }} for {{ IMAGE }} image and {{ FLAVOR }} flavor and {{ KEY_NAME}}"
+    - name: "Launching instance `{{ instance_name }}` with private IP"
       os_server:
         name: "{{ instance_name }}"
         state: present
@@ -31,9 +34,13 @@
         flavor: "{{ FLAVOR }}"
         key_name: "{{ KEY_NAME }}"
         network: "{{ NETWORK }}"
+        auto_ip: no
       register: server
 
-    # - name: Launched instance public IP
-    #   debug:
-    #     var: server.server
-  when: FLOATING_IP is not defined
+    - debug:
+        var: server.server.private_v4
+
+    - name: Set SERVER_IP variable
+      set_fact:
+        SERVER_IP: "{{ server.server.private_v4 }}"
+  when: FLOATING_IP == "None"
