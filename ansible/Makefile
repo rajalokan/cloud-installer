@@ -23,5 +23,14 @@ delete_ney11:
 	ansible-playbook -e instance_name="ney11" delete.yml
 
 
+
+boot_newton:
+	ansible-playbook -e instance_name="newton" --vault-password-file ~/.vault_password --tags "boot" boot.yml
+provision_newton:
+	ansible-playbook -e instance_name="newton" --vault-password-file ~/.vault_password --tags "provision" boot.yml
+delete_newton:
+	ansible-playbook -e instance_name="newton" delete.yml
+
+
 fetch_ansible_roles:
 	ansible-galaxy install -r requirements.yml -p roles/
