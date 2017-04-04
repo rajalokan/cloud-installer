@@ -1,9 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+function print_info {
+  PROC_NAME="- [ $@ ] -"
+  printf "\n%s%s\n" "$PROC_NAME" "${LINE:${#PROC_NAME}}"
+}
+
+function info_block {
+  echo "${LINE}"
+  print_info "$@"
+  echo "${LINE}"
+}
 
 function GetanotherVersion {
     echo "Not Implemented"
 }
 
+# ==============================================================================
 # GetOSVersion
 function GetOSVersion {
 
@@ -240,10 +252,4 @@ function real_install_package {
 function install_package {
     update_package_repo
     real_install_package $@ || RETRY_UPDATE=True update_package_repo && real_install_package $@
-}
-
-function info_block {
-  echo "${LINE}"
-  print_info "$@"
-  echo "${LINE}"
 }
