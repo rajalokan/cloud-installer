@@ -2,6 +2,7 @@
 
 - name: "Prepare instance {{ deployment_type }} before running playbooks"
   hosts: localhost
+  connection: local
   tasks:
     - include: setup_roles_and_dependencies.yml role="{{ roles_metadata[item] }}"
       with_items: "{{ roles }}"
