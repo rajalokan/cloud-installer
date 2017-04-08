@@ -3,7 +3,6 @@
 ## Shell Opts ----------------------------------------------------------------
 # set -e -u -x
 
-
 ## Vars ----------------------------------------------------------------------
 BASE_DIR="${BASE_DIR:-/opt}"
 PROJECT_DIR="${BASE_DIR}/cloud-installer"
@@ -24,25 +23,28 @@ function source_library {
         wget https://raw.githubusercontent.com/rajalokan/cloud-installer/scripts/master/library.sh -O /tmp/library.sh
     fi
     source /tmp/library.sh
-    info_block "Bootstrapping ${DEPLOYMENT_TYPE} ....."
+    info_block "Bootstrapping ${DEPLOYMENT_TYPE} --- Start"
 }
 
-info_block "Bootstrapping ${DEPLOYMENT_TYPE} ....." 2> /dev/null ||
+info_block "Bootstrapping ${DEPLOYMENT_TYPE} --- Start" 2> /dev/null ||
     source_library
 
 sudo chown -R ${USER}:${USER} /opt
 
-is_package_installed git || install_package git
+info_block "Bootstrapping ${DEPLOYMENT_TYPE} --- END"
+exit 0
 
-if [[ ! -d /opt/cloud-installer ]]; then
-    git clone https://github.com/rajalokan/cloud-installer.git ${PROJECT_DIR}
-fi
-
-# Check if ansible is installed, if not bootstrap ansible
-ansible-playbook --help > /dev/null ||
-    eval $(printf "%q\n" "${PROJECT_DIR}/scripts/bootstrap_ansible.sh")
-
-# Run playbook
-pushd "${PROJECT_DIR}/ansible"
-    ansible-playbook playbooks/${DEPLOYMENT_TYPE}.yml
-popd
+# is_package_installed git || install_package git
+#
+# if [[ ! -d /opt/cloud-installer ]]; then
+#     git clone https://github.com/rajalokan/cloud-installer.git ${PROJECT_DIR}
+# fi
+#
+# # Check if ansible is installed, if not bootstrap ansible
+# ansible-playbook --help > /dev/null ||
+#     eval $(printf "%q\n" "${PROJECT_DIR}/scripts/bootstrap_ansible.sh")
+#
+# # Run playbook
+# pushd "${PROJECT_DIR}/ansible"
+#     ansible-playbook playbooks/${DEPLOYMENT_TYPE}.yml
+# popd
