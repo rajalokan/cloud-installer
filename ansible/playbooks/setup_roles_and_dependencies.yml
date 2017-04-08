@@ -1,0 +1,21 @@
+---
+- name: "Cloning role {{ role.name }}"
+  git:
+    repo: "{{ role.src }}"
+    dest: "{{ ansible_roles_path }}/{{ role.name }}"
+    version: "{{ role.version | default('master') }}"
+    update: true
+    force: true
+
+- name: "Cloning dependencies for role {{ role.name }}"
+  git:
+    repo: "{{ dependency.src }}"
+    dest: "{{ ansible_roles_path }}/{{ dependency.name }}"
+    version: "{{ dependency.version | default('master') }}"
+  with_items: "{{ dependencies }}"
+  loop_control:
+    loop_var: dependency
+  ignore_errors: yes
+  vars:
+    dependencies: "{{ lookup('file', dependencies_file) | from_yaml }}"
+    dependencies_file: "{{ ansible_roles_path }}/{{ role.name }}/ansible-role-requirements.yml"

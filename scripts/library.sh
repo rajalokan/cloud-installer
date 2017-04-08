@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+## Vars ----------------------------------------------------------------------
+# PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1 setuptools==33.1.1 wheel==0.29.0 '}
+PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1'}
+
 function print_info {
   PROC_NAME="- [ $@ ] -"
   printf "\n%s%s\n" "$PROC_NAME" "${LINE:${#PROC_NAME}}"
@@ -13,6 +17,50 @@ function info_block {
 
 function GetanotherVersion {
     echo "Not Implemented"
+}
+
+function get_pip {
+
+  # check if pip is already installed
+  if [ "$(which pip)" ]; then
+
+    # make sure that the right pip base packages are installed
+    # If this fails retry with --isolated to bypass the repo server because the repo server will not have
+    # been updated at this point to include any newer pip packages.
+    sudo -H pip install --upgrade ${PIP_INSTALL_OPTIONS} || sudo -H pip install --upgrade --isolated ${PIP_INSTALL_OPTIONS}
+
+    # Ensure that our shell knows about the new pip
+    hash -r pip
+
+  # when pip is not installed, install it
+  else
+
+    # If GET_PIP_URL is set, then just use it
+    if [ -n "${GET_PIP_URL:-}" ]; then
+      curl --silent ${GET_PIP_URL} > /opt/get-pip.py
+      if head -n 1 /opt/get-pip.py | grep python; then
+        python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
+        return
+      fi
+    fi
+
+    # Try getting pip from bootstrap.pypa.io as a primary source
+    curl --silent https://bootstrap.pypa.io/get-pip.py > /opt/get-pip.py
+    if head -n 1 /opt/get-pip.py | grep python; then
+      sudo -H python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
+      return
+    fi
+
+    # Try the get-pip.py from the github repository as a primary source
+    curl --silent https://raw.githubusercontent.com/pypa/get-pip/master/get-pip.py > /opt/get-pip.py
+    if head -n 1 /opt/get-pip.py | grep python; then
+      sudo -H python /opt/get-pip.py ${PIP_INSTALL_OPTIONS}
+      return
+    fi
+
+    echo "A suitable download location for get-pip.py could not be found."
+    exit_fail
+  fi
 }
 
 # ==============================================================================
@@ -250,6 +298,7 @@ function real_install_package {
 # Distro-agnostic package installer
 # install_package package [package ...]
 function install_package {
-    update_package_repo
+    # update_package_repo
+    info_block "Installing package $@"
     real_install_package $@ || RETRY_UPDATE=True update_package_repo && real_install_package $@
 }

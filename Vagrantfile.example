@@ -1,0 +1,16 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "bento/ubuntu-16.04"
+
+  # Prevent TTY Errors (copied from laravel/homestead: "homestead.rb" file)... By default this is "bash -l".
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
+  config.vm.define "playbox" do |playbox|
+    playbox.vm.provision "shell", inline: <<-SHELL
+	   curl -fsS https://raw.githubusercontent.com/rajalokan/scripts-library/master/bootstrap-ansible.sh | bash
+    SHELL
+  end
+end

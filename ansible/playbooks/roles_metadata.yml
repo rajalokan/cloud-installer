@@ -1,0 +1,10 @@
+rajalokan.dotfiles:
+  name: rajalokan.dotfiles
+  scm: git
+  src: https://github.com/rajalokan/dotfiles.git
+  version: master
+rajalokan.docker:
+  name: rajalokan.docker
+  scm: git
+  src: https://github.com/rajalokan/dotfiles.git
+  version: master
