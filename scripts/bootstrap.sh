@@ -20,7 +20,7 @@ fi
 
 function source_library {
     if [[ ! -f /tmp/llibrary.sh ]]; then
-        wget https://raw.githubusercontent.com/rajalokan/cloud-installer/scripts/master/library.sh -O /tmp/library.sh
+        wget https://raw.githubusercontent.com/rajalokan/cloud-installer/master/scripts/library.sh -O /tmp/library.sh
     fi
     source /tmp/library.sh
     info_block "Bootstrapping ${DEPLOYMENT_TYPE} --- Start"

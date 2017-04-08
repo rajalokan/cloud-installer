@@ -1,6 +1,6 @@
 
 boot_playbox:
-	ansible-playbook -e instance_name="playbox"  --vault-password-file ~/.vault_password --tags="boot" boot.yml
+	cd ansible && ansible-playbook -e instance_name="playbox"  --vault-password-file ~/.vault_password --tags="boot" playbooks/boot.yml
 provision_playbox:
 	ansible-playbook -e instance_name="playbox" --vault-password-file ~/.vault_password --tags="provision" boot.yml
 delete_playbox:

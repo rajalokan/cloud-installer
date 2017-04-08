@@ -1,0 +1,41 @@
+---
+# - name: "localhost: Setting up instance with following details. name= {{ instance_name }}"
+#   hosts: localhost
+#   pre_tasks:
+#     - block:
+#       - include_vars: ../../vars/default.yml
+#       - include_vars: ../../vars/default_vault.yml
+#       - include_vars: ../../vars/{{ instance_name }}.yml
+#         ignore_errors: true
+#       - include_vars: ../../vars/{{ instance_name }}_vault.yml
+#         ignore_errors: true
+#       tags: boot
+#   tasks:
+#     - block:
+#       - include: launch_or_get_instance.yml
+#       - include: wait_for_ssh.yml
+#       - include: readd_to_known_hosts.yml
+#       - include: add_to_inventory.yml
+#       tags: boot
+#
+# - include: verify_accessibility.yml
+#   tags: always
+#
+
+- name: "playbox: "
+  hosts: playbox
+  tasks:
+    # - name: Update all packages to latest
+    #   apt:
+    #     update_cache: yes
+    #   become: true
+    #
+    - name: "Make sure tmux is installed"
+      apt:
+        name: tmux
+        state: installed
+      become: true
+
+    - name: "Run bootstrap.sh within tmux"
+      shell: tmux new -s bootstrap -d 2> /dev/null; tmux send-keys -t bootstrap "curl -fsS https://raw.githubusercontent.com/rajalokan/cloud-installer/master/scripts/bootstrap.sh | bash" C-m
+  tags: boot
