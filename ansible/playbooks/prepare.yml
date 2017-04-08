@@ -1,0 +1,12 @@
+---
+
+- name: "Prepare instance {{ deployment_type }} before running playbooks"
+  hosts: localhost
+  tasks:
+    - include: setup_roles_and_dependencies.yml role="{{ roles_metadata[item] }}"
+      with_items: "{{ roles }}"
+  vars:
+    roles: "{{ roles_map[deployment_type] }}"
+    roles_map: "{{ lookup('file', 'deployment_roles_map.yml') | from_yaml }}"
+    roles_metadata: "{{ lookup('file', 'roles_metadata.yml') | from_yaml }}"
+    ansible_roles_path: "/opt/ansible_roles"

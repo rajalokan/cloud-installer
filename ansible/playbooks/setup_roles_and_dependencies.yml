@@ -1,17 +1,18 @@
 ---
+
 - name: "Cloning role {{ role.name }}"
   git:
     repo: "{{ role.src }}"
     dest: "{{ ansible_roles_path }}/{{ role.name }}"
     version: "{{ role.version | default('master') }}"
-    update: true
-    force: true
+    update: no
 
 - name: "Cloning dependencies for role {{ role.name }}"
   git:
     repo: "{{ dependency.src }}"
     dest: "{{ ansible_roles_path }}/{{ dependency.name }}"
     version: "{{ dependency.version | default('master') }}"
+    update: no
   with_items: "{{ dependencies }}"
   loop_control:
     loop_var: dependency

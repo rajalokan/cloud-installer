@@ -3,17 +3,5 @@
 # Run playbooks
 - name: "playbox: Running dotfiles"
   hosts: localhost
-
-  pre_tasks:
-    - include: setup_roles_and_dependencies.yml role="{{ roles_metadata[item] }}"
-      with_items: "{{ roles }}"
-
   roles:
     - { role: rajalokan.dotfiles }
-
-  vars:
-    roles:
-      - 'rajalokan.dotfiles'
-    roles_metadata: "{{ lookup('file', roles_metada_file) | from_yaml }}"
-    roles_metada_file: 'roles_metadata.yml'
-    ansible_roles_path: "/opt/ansible-roles"

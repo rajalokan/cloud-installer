@@ -1,0 +1,8 @@
+playbox:
+  - rajalokan.dotfiles
+dockerbox:
+  - rajalokan.dotfiles
+  - rajalokan.docker
+keystone:
+  - rajalokan.dotfiles
+  - openstack.keystone
