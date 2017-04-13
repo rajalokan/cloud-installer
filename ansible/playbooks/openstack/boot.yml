@@ -7,9 +7,7 @@
     - ../../vars/default_vault.yml
     - ../../vars/{{ instance_name }}_vault.yml
   tasks:
-
     - include: get_or_launch_instance.yml
-      tags: boot
 
     - name: Waiting for instance to finish booting and ssh to be up
       wait_for:
@@ -18,20 +16,12 @@
         port=22
         delay=10
         timeout=600
-      tags: boot
-
-    - name: Check if host is present in known_hosts
-      shell: "ssh-keygen -F {{ SERVER_IP }}"
-      register: result
-      tags: boot
 
     - name: Remove any entry of this instance from known_hosts
       known_hosts:
         path: ~/.ssh/known_hosts
         name: "{{ SERVER_IP }}"
         state: absent
-      when: "result.rc != 0"
-      tags: boot
 
     - name: Add this instance to known_hosts
       known_hosts:
@@ -39,16 +29,13 @@
         key: "{{ lookup('pipe', 'ssh-keyscan -t rsa {{ SERVER_IP }}') }}"
         name: "{{ SERVER_IP }}"
         state: present
-      when: "result.rc != 0"
-      tags: boot
 
-    - name: add the server `{{ SERVER_IP }}` to ansible inventory
+    - name: add server `{{ SERVER_IP }}` to ansible inventory
       add_host:
         hostname: "{{ SERVER_IP }}"
         groups: "{{ instance_name }}"
         ansible_ssh_private_key_file: "{{ PRIVATE_KEY_FILE }}"
         ansible_ssh_user: ubuntu
-      tags: boot
 
 - name: "{{ instance_name | upper }} : Verify ssh access and run playbook within tmux"
   hosts: "{{ instance_name }}"
@@ -59,25 +46,26 @@
       retries: 5
       delay: 10
       ignore_errors: true
-      tags: ["boot"]
 
-    # - name: Update all packages to latest
-    #   apt:
-    #     update_cache: yes
-    #   become: true
-    #   tags: ["boot", "provision"]
+    - name: Update all packages to latest
+      apt:
+        update_cache: yes
+      become: true
 
     - name: Make sure tmux is installed
       apt:
         name: tmux
         state: installed
       become: true
-      tags: ["boot", "provision"]
+
+    - name: Fetch opinionated `tmux.conf` at `~/.tmux.conf`
+      get_url:
+        url: https://raw.githubusercontent.com/rajalokan/dotfiles/master/files/tmux/tmux.conf
+        dest: ~/.tmux.conf
+        force: no
 
     - name: Start a new tmux session and fetch bootstrap script
       shell: tmux new -s bootstrap -d >/dev/null 2>&1 && echo "success" || echo "failure"
-      tags: ["boot", "provision"]
 
     - name: "Fetch bootstrap script and execute it withing a tmux session `bootstrap`"
       shell: tmux send-keys -t bootstrap "rm -rf /tmp/bootstrap.sh; wget https://raw.githubusercontent.com/rajalokan/cloud-installer/master/scripts/bootstrap.sh -O /tmp/bootstrap.sh; chmod +x /tmp/bootstrap.sh; /tmp/bootstrap.sh {{ instance_name }}" C-m
-      tags: ["boot", "provision"]

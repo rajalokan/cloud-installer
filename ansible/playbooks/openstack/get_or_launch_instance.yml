@@ -1,7 +1,7 @@
 ---
 
 - block:
-    - name: "Launching or getting instance `{{ instance_name }}` with floating ip {{ FLOATING_IP }}"
+    - name: "Launching or getting instance `{{ instance_name }}` with floating ip `{{ FLOATING_IP }}``"
       os_server:
         name: "{{ instance_name }}"
         state: present
@@ -15,8 +15,8 @@
           - "{{ FLOATING_IP }}"
       register: server
 
-    - debug:
-        var: server.server.public_v4
+    # - debug:
+    #     var: server.server.public_v4
 
     - name: "Set `SERVER_IP` variable to public ip {{ FLOATING_IP }}"
       set_fact:

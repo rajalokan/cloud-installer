@@ -1,0 +1,9 @@
+---
+
+- name: "LOCALHOST : Running playbook `delete.yml` against instance `{{ instance_name }}`"
+  hosts: localhost
+  tasks:
+    - name: "Deleting instance `{{ instance_name }}`"
+      os_server:
+        name: "{{ instance_name }}"
+        state: absent
