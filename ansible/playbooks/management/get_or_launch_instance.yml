@@ -1,7 +1,7 @@
 ---
 
 - block:
-    - name: "Launching or getting instance `{{ instance_name }}` with floating ip `{{ FLOATING_IP }}``"
+    - name: "Launching or getting instance `{{ instance_name }}` with floating ip `{{ FLOATING_IP }}`"
       os_server:
         name: "{{ instance_name }}"
         state: present

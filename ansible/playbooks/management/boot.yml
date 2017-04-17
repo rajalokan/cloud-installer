@@ -3,8 +3,8 @@
 - name: "LOCALHOST: Setting up instance with following details. name= {{ instance_name }}"
   hosts: localhost
   vars_files:
-    - ../../vars/default.yml
-    - ../../vars/default_vault.yml
+    - ../../vars/defaults.yml
+    - ../../vars/defaults_vault.yml
     - ../../vars/{{ instance_name }}_vault.yml
   tasks:
     - include: get_or_launch_instance.yml

@@ -18,6 +18,6 @@ if [[ "${DEPLOYMENT_ACTION}" == 'provision' ]]; then
 else
     # Launches VM and then runs playbooks on remote hosts under tmux session `bootstrap`
     pushd "ansible"
-        ansible-playbook -e instance_name=${DEPLOYMENT_INSTNACE} ${VAULT_OPTIONS} playbooks/openstack/${DEPLOYMENT_ACTION}.yml
+        ansible-playbook -e instance_name=${DEPLOYMENT_INSTNACE} ${VAULT_OPTIONS} playbooks/management/${DEPLOYMENT_ACTION}.yml
     popd
 fi
