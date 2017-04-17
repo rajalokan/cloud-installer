@@ -13,6 +13,7 @@ VAULT_OPTIONS="--vault-password-file ~/.vault_password"
 if [[ "${DEPLOYMENT_ACTION}" == 'provision' ]]; then
     # Will run playbook locally on remote host
     pushd "ansible"
+        ansible-playbook -e deployment_type=${DEPLOYMENT_INSTNACE} playbooks/prepare.yml
         ansible-playbook playbooks/${DEPLOYMENT_INSTNACE}.yml
     popd
 else

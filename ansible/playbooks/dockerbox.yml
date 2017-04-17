@@ -4,3 +4,4 @@
   hosts: localhost
   roles:
     - { role: rajalokan.dotfiles }
+    - { role: bootstrap_docker }

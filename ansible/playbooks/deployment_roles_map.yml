@@ -2,7 +2,7 @@ playbox:
   - rajalokan.dotfiles
 dockerbox:
   - rajalokan.dotfiles
-  - rajalokan.docker
+  - bootstrap_docker
 keystone:
   - rajalokan.dotfiles
   - openstack.keystone

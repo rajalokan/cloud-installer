@@ -5,9 +5,9 @@
   connection: local
   tasks:
     - include: setup_roles_and_dependencies.yml role="{{ roles_metadata[item] }}"
-      with_items: "{{ roles }}"
+      with_items: "{{ roles_info }}"
   vars:
-    roles: "{{ roles_map[deployment_type] }}"
+    roles_info: "{{ roles_map[deployment_type] }}"
     roles_map: "{{ lookup('file', 'deployment_roles_map.yml') | from_yaml }}"
     roles_metadata: "{{ lookup('file', 'roles_metadata.yml') | from_yaml }}"
     ansible_roles_path: "/opt/ansible_roles"

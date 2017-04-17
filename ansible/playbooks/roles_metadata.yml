@@ -3,8 +3,8 @@ rajalokan.dotfiles:
   scm: git
   src: https://github.com/rajalokan/dotfiles.git
   version: master
-rajalokan.docker:
-  name: rajalokan.docker
+bootstrap_docker:
+  name: bootstrap_docker
   scm: git
-  src: https://github.com/rajalokan/dotfiles.git
+  src: https://github.com/rajalokan/ansible_role_bootstrap_docker.git
   version: master
