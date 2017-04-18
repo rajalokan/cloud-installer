@@ -1,0 +1,6 @@
+---
+
+- name: "playbox: Running dotfiles"
+  hosts: localhost
+  roles:
+    - { role: rajalokan.dotfiles }
