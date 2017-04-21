@@ -1,0 +1,13 @@
+---
+
+- name: "dockerbox : Running playbooks"
+  hosts: localhost
+  # roles:
+  #   - { role: rajalokan_dotfiles }
+  #   - { role: bootstrap_docker }
+  tasks:
+    - name: Make sure `/opt` is owned by `ubuntu`
+
+    - name: Clone giftwrap
+
+    - name: Build docker Image

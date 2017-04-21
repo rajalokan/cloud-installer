@@ -7,4 +7,4 @@ osdev:
   - rajalokan.dotfiles
 keystone:
   - rajalokan.dotfiles
-  - openstack.keystone
+  - galera_server

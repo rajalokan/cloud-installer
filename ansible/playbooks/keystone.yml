@@ -1,8 +1,18 @@
 ---
 
 # Run playbooks
-- name: "keystone_all: Running roles: keystone"
-  hosts: keystone_all
+- name: "Run dotfiles"
+  hosts: localhost
+  connection: local
   roles:
-    - { role: ansible_role_dotfiles }
-    - { role: os_keystone, tags: ["os_keystone"], become: yes }
+    - { role: rajalokan_dotfiles }
+
+# Run keystone
+- name: "keystone_all: Running roles: keystone"
+  hosts: galera_all
+  user: root
+  roles:
+    - { role: "galera_server" }
+  become: true
+  vars:
+    galera_root_password: rajalokan

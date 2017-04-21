@@ -8,3 +8,13 @@ bootstrap_docker:
   scm: git
   src: https://github.com/rajalokan/ansible_role_bootstrap_docker.git
   version: master
+bootstrap_openstack:
+  name: bootstrap_openstack
+  scm: git
+  src: https://github.com/rajalokan/ansible_role_bootstrap_openstack.git
+  version: master
+galera_server:
+  name: galera_server
+  scm: git
+  src: https://github.com/rajalokan/openstack-ansible-galera_server.git
+  version: stable/mitaka

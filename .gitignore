@@ -2,6 +2,5 @@
 *.retry
 Pipfile
 Pipfile.lock
-ansible/inventory
 Vagrantfile
 .vagrant/
