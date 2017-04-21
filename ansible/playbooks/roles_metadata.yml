@@ -21,7 +21,7 @@ galera_server:
 rabbitmq_server:
   name: rabbitmq_server
   scm: git
-  src: https://github.com/openstack/openstack-ansible-rabbitmq_server.git
+  src: https://github.com/rajalokan/openstack-ansible-rabbitmq_server.git
   version: stable/mitaka
 os_keystone:
   name: os_keystone
