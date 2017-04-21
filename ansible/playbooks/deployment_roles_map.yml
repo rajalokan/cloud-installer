@@ -8,3 +8,5 @@ osdev:
 keystone:
   - rajalokan.dotfiles
   - galera_server
+  - rabbitmq_server
+  - os_keystone

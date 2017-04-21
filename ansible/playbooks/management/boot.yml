@@ -2,6 +2,7 @@
 
 - name: "LOCALHOST: Setting up instance with following details. name= {{ instance_name }}"
   hosts: localhost
+  connection: local
   vars_files:
     - ../../vars/defaults.yml
     - ../../vars/defaults_vault.yml
