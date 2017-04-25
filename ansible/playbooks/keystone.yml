@@ -7,76 +7,76 @@
   roles:
     - { role: rajalokan.dotfiles }
 
-# Run keystone
-- name: "keystone_all: Running roles: keystone"
-  hosts: galera_all
-  user: root
-  roles:
-    - { role: "galera_server", tags: [ "galera-server"] }
-  become: yes
-  vars:
-    container_address: "{{ ansible_ssh_host }}"
-    galera_root_password: rajalokan
-    galera_root_user: root
-
-# Install, Configure and Run RabbitMQ
-- name: Install rabbitmq server
-  hosts: rabbitmq_all
-  user: root
-  roles:
-    - { role: "rabbitmq_server", tags: [ "rabbitmq-server" ] }
-  become: yes
-  vars:
-    rabbitmq_cookie_token: rajalokan
-
-# Install, Configure and Run keystone
-- name: Installation and setup of keystone
-  hosts: keystone_all
-  user: root
-  pre_tasks:
-    - name: Create DB for service
-      mysql_db:
-        login_user: "root"
-        login_password: "rajalokan"
-        login_host: "localhost"
-        name: "{{ keystone_galera_database }}"
-        state: "present"
-      delegate_to: "{{ keystone_galera_address }}"
-      when: inventory_hostname == groups['keystone_all'][0]
-
-    - name: Grant access to the DB for the service
-      mysql_user:
-        login_user: "root"
-        login_password: "rajalokan"
-        login_host: "localhost"
-        name: "{{ keystone_galera_database }}"
-        password: "{{ keystone_container_mysql_password }}"
-        host: "{{ item }}"
-        state: "present"
-        priv: "{{ keystone_galera_database }}.*:ALL"
-      with_items:
-        - "localhost"
-        - "%"
-      delegate_to: "{{ keystone_galera_address }}"
-      when: inventory_hostname == groups['keystone_all'][0]
-  roles:
-    - { role: "os_keystone", tags: ["os-keystone"] }
-  become: true
-  vars:
-    external_lb_vip_address: 192.168.95.9
-    internal_lb_vip_address: 192.168.95.9
-    keystone_galera_address: localhost
-    keystone_galera_database: keystone
-    keystone_venv_tag: "testing"
-    keystone_developer_mode: true
-    keystone_git_install_branch: stable/mitaka
-    keystone_auth_admin_password: "rajalokan"
-    keystone_service_password: "rajalokan"
-    keystone_rabbitmq_password: "rajalokan"
-    keystone_container_mysql_password: "rajalokan"
-    keystone_rabbitmq_port: 5671
-    keystone_rabbitmq_userid: keystone
-    keystone_rabbitmq_vhost: /keystone
-    keystone_rabbitmq_servers: 192.168.95.9
-    keystone_rabbitmq_use_ssl: true
-    galera_client_drop_config_file: false
+      ## Run keystone
+      #- name: "keystone_all: Running roles: keystone"
+      #  hosts: galera_all
+      #  user: root
+      #  roles:
+      #    - { role: "galera_server", tags: [ "galera-server"] }
+      #  become: yes
+      #  vars:
+      #    container_address: "{{ ansible_ssh_host }}"
+      #    galera_root_password: rajalokan
+      #    galera_root_user: root
+      #
+      ## Install, Configure and Run RabbitMQ
+      #- name: Install rabbitmq server
+      #  hosts: rabbitmq_all
+      #  user: root
+      #  roles:
+      #    - { role: "rabbitmq_server", tags: [ "rabbitmq-server" ] }
+      #  become: yes
+      #  vars:
+      #    rabbitmq_cookie_token: rajalokan
+      #
+      ## Install, Configure and Run keystone
+      #- name: Installation and setup of keystone
+      #  hosts: keystone_all
+      #  user: root
+      #  pre_tasks:
+      #    - name: Create DB for service
+      #      mysql_db:
+      #        login_user: "root"
+      #        login_password: "rajalokan"
+      #        login_host: "localhost"
+      #        name: "{{ keystone_galera_database }}"
+      #        state: "present"
+      #      delegate_to: "{{ keystone_galera_address }}"
+      #      when: inventory_hostname == groups['keystone_all'][0]
+      #
+      #    - name: Grant access to the DB for the service
+      #      mysql_user:
+      #        login_user: "root"
+      #        login_password: "rajalokan"
+      #        login_host: "localhost"
+      #        name: "{{ keystone_galera_database }}"
+      #        password: "{{ keystone_container_mysql_password }}"
+      #        host: "{{ item }}"
+      #        state: "present"
+      #        priv: "{{ keystone_galera_database }}.*:ALL"
+      #      with_items:
+      #        - "localhost"
+      #        - "%"
+      #      delegate_to: "{{ keystone_galera_address }}"
+      #      when: inventory_hostname == groups['keystone_all'][0]
+      #  roles:
+      #    - { role: "os_keystone", tags: ["os-keystone"] }
+      #  become: true
+      #  vars:
+      #    external_lb_vip_address: 192.168.95.9
+      #    internal_lb_vip_address: 192.168.95.9
+      #    keystone_galera_address: localhost
+      #    keystone_galera_database: keystone
+      #    keystone_venv_tag: "testing"
+      #    keystone_developer_mode: true
+      #    keystone_git_install_branch: stable/mitaka
+      #    keystone_auth_admin_password: "rajalokan"
+      #    keystone_service_password: "rajalokan"
+      #    keystone_rabbitmq_password: "rajalokan"
+      #    keystone_container_mysql_password: "rajalokan"
+      #    keystone_rabbitmq_port: 5671
+      #    keystone_rabbitmq_userid: keystone
+      #    keystone_rabbitmq_vhost: /keystone
+      #    keystone_rabbitmq_servers: 192.168.95.9
+      #    keystone_rabbitmq_use_ssl: true
+      #    galera_client_drop_config_file: false
