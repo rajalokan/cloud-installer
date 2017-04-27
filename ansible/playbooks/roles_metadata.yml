@@ -31,5 +31,5 @@ os_keystone:
 bootstrap_guts:
   name: bootstrap_guts
   scm: git
-  src: https://dev.aptira.com/alok/guts-dashboard.git
+  src: https://dev.aptira.com/alok/ansible_role_bootstrap_guts.git
   version: master
