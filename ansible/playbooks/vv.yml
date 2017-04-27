@@ -1,0 +1,20 @@
+---
+
+# Run playbooks
+- name: "vv: Running roles: dotfiles"
+  hosts: vv
+  roles:
+    - { role: rajalokan.dotfiles }
+  # tasks:
+  #   - name: Make opt owned by user
+  #     file:
+  #       path: /opt
+  #       owner: "ubuntu"
+  #     become: true
+  #
+  #   - name: Clone cloud--installer
+  #     git:
+  #       repo: https://github.com/rajalokan/cloud-installer.git
+  #       dest: /opt/cloud-installer
+  #
+  #   # TODO: setup venv for cloud-installer

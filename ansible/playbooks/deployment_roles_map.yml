@@ -7,3 +7,5 @@ osdev:
   - rajalokan.dotfiles
 keystone:
   - rajalokan.dotfiles
+vv:
+  - rajalokan.dotfiles

@@ -29,7 +29,7 @@ sudo apt install -y mariadb-server python-pymysql
 # Configure your mysql installation
 sudo bash -c 'cat << EOF > /etc/mysql/conf.d/openstack.cnf
 [mysqld]
-bind-address = 10.0.0.11
+bind-address = 0.0.0.0
 
 default-storage-engine = innodb
 innodb_file_per_table = on

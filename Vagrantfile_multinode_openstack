@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+
+  config.vm.define "controller" do |controller|
+    controller.vm.hostname = "controller"
+    controller.vm.network "private_network", ip: "10.0.0.11"
+    controller.vm.provider "virtualbox" do |v|
+      v.name = "controller"
+      v.memory = 4096
+      v.cpus = 2
+    end
+  end
+
+  config.vm.define "compute" do |compute|
+    compute.vm.hostname = "compute"
+    compute.vm.network "private_network", ip: "10.0.0.31"
+    compute.vm.provider "virtualbox" do |v|
+      v.name = "compute"
+      v.memory = 2048
+      v.cpus = 1
+    end
+  end
+
+end
