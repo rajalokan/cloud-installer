@@ -1,5 +1,20 @@
 
 ```
+mysql -u root -p${PASSWORD} -e "CREATE DATABASE guts;"
+mysql -u root -p${PASSWORD} -e "GRANT ALL PRIVILEGES ON guts.* TO 'guts'@'localhost' IDENTIFIED BY 'rajalokan';"
+mysql -u root -p${PASSWORD} -e "GRANT ALL PRIVILEGES ON guts.* TO 'guts'@'%' IDENTIFIED BY 'rajalokan';"
+
+unset `env | grep OS_ | cut -d'=' -f1 | xargs` && env | grep OS_
+source admin_openrc
+openstack user create --domain default --password rajalokan guts
+openstack role add --project service --user guts admin
+openstack service create --name guts --description "OpenStack Migration Service" migration
+openstack endpoint create --region RegionOne migration public http://${IP_ADDR}:7000/v1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne migration internal http://${IP_ADDR}:7000/v1/%\(tenant_id\)s
+openstack endpoint create --region RegionOne migration admin http://${IP_ADDR}:87000/v1/%\(tenant_id\)s
+```
+
+```
 sudo apt-add-repository 'deb [arch=amd64] http://guts.stackbuffet.com/deb-test/ trusty-updates/mitaka main'
 ```
 
@@ -22,21 +37,6 @@ EOF'
 sudo apt-get update
 ```
 
-
-```
-mysql -u root -p${PASSWORD} -e "CREATE DATABASE guts;"
-mysql -u root -p${PASSWORD} -e "GRANT ALL PRIVILEGES ON guts.* TO 'guts'@'localhost' IDENTIFIED BY 'rajalokan';"
-mysql -u root -p${PASSWORD} -e "GRANT ALL PRIVILEGES ON guts.* TO 'guts'@'%' IDENTIFIED BY 'rajalokan';"
-
-unset `env | grep OS_ | cut -d'=' -f1 | xargs` && env | grep OS_
-source admin_openrc
-openstack user create --domain default --password rajalokan guts
-openstack role add --project service --user guts admin
-openstack service create --name guts --description "OpenStack Migration Service" migration
-openstack endpoint create --region RegionOne migration public http://${IP_ADDR}:7000/v1/%\(tenant_id\)s
-openstack endpoint create --region RegionOne migration internal http://${IP_ADDR}:7000/v1/%\(tenant_id\)s
-openstack endpoint create --region RegionOne migration admin http://${IP_ADDR}:87000/v1/%\(tenant_id\)s
-```
 
 ```
 sudo apt-get install -y guts-api

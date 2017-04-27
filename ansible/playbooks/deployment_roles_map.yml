@@ -3,9 +3,14 @@ playbox:
 dockerbox:
   - rajalokan.dotfiles
   - bootstrap_docker
-osdev:
-  - rajalokan.dotfiles
 keystone:
   - rajalokan.dotfiles
+  - bootstrap_openstack
+guts:
+  - rajalokan.dotfiles
+  - bootstrap_openstack
+  - bootstrap_guts
 vv:
+  - rajalokan.dotfiles
+osdev:
   - rajalokan.dotfiles

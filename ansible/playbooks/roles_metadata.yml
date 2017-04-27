@@ -28,3 +28,8 @@ os_keystone:
   scm: git
   src: https://github.com/rajalokan/openstack-ansible-os_keystone.git
   version: stable/mitaka
+bootstrap_guts:
+  name: bootstrap_guts
+  scm: git
+  src: https://dev.aptira.com/alok/guts-dashboard.git
+  version: master
