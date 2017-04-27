@@ -4,6 +4,9 @@ localhost ansible_connection=local
 [vv]
 localhost ansible_connection=local
 
+[keystone]
+localhost ansible_connection=local
+
 [galera_all]
 localhost ansible_connection=local ansible_user=root
 

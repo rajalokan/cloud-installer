@@ -100,6 +100,7 @@ openstack project create --domain default --description "Admin Project" admin
 openstack user create --domain default --password rajalokan admin
 openstack role create admin
 openstack role add --project admin --user admin admin
+
 openstack project create --domain default --description "Service Project" service
 openstack project create --domain default --description "Demo Project" demo
 openstack user create --domain default --password rajalokan demo
