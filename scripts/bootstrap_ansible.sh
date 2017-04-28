@@ -100,11 +100,11 @@ function update_and_upgrade {
         Ubuntu)
             sudo apt-get update
             DEBIAN_FRONTEND=noninteractive sudo apt -y upgrade
-            # DEBIAN_FRONTEND=noninteractive sudo apt-get -y install \
-            #   git python-all python-dev curl python2.7-dev build-essential \
-            #   libssl-dev libffi-dev netcat python-requests python-openssl python-pyasn1 \
-            #   python-netaddr python-prettytable python-crypto python-yaml \
-            #   python-virtualenv
+            DEBIAN_FRONTEND=noninteractive sudo apt-get -y install \
+              git python-all python-dev curl python2.7-dev build-essential \
+              libssl-dev libffi-dev netcat python-requests python-openssl python-pyasn1 \
+              python-netaddr python-prettytable python-crypto python-yaml \
+              python-virtualenv
             ;;
     esac
 

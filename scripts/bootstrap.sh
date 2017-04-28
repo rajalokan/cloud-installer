@@ -50,7 +50,7 @@ ansible-playbook --help > /dev/null 2>&1 ||
 # Run playbook
 pushd "${PROJECT_DIR}/ansible"
     ansible-playbook -e deployment_type=${DEPLOYMENT_TYPE} playbooks/prepare.yml
-    ansible-playbook playbooks/${DEPLOYMENT_TYPE}.yml
+    ansible-playbook playbooks/instances/${DEPLOYMENT_TYPE}.yml
 popd
 
 info_block "Bootstrapping ${DEPLOYMENT_TYPE} --- END"

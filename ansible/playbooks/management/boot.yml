@@ -34,12 +34,12 @@
     - name: add server `{{ SERVER_IP }}` to ansible inventory
       add_host:
         hostname: "{{ SERVER_IP }}"
-        groups: "{{ instance_name }}"
+        groups: "{{ instance_name }}_bootstrap"
         ansible_ssh_private_key_file: "{{ PRIVATE_KEY_FILE }}"
         ansible_ssh_user: ubuntu
 
 - name: "{{ instance_name | upper }} : Verify ssh access and run playbook within tmux"
-  hosts: "{{ instance_name }}"
+  hosts: "{{ instance_name }}_bootstrap"
   gather_facts: no
   tasks:
     - name: "Try to login to the instance `{{ instance_name }}`"
