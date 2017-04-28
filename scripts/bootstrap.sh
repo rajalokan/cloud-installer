@@ -18,6 +18,9 @@ ANSIBLE_ROLE_FILE_DOTFILES="https://github.com/rajalokan/dotfiles"
 # Default deployment is playbox setup.
 DEPLOYMENT_TYPE="${1:-playbox}"
 
+# TODO: Quickfix
+rm -rf ${BOOTSTRAP_DIR}
+
 # Source library.sh if cloud-installer directory exists
 if [[ -d ${PROJECT_DIR} ]]; then
     source ${PROJECT_DIR}/scripts/library.sh

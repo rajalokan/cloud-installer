@@ -10,4 +10,4 @@
     roles_info: "{{ roles_map[deployment_type] }}"
     roles_map: "{{ lookup('file', 'deployment_roles_map.yml') | from_yaml }}"
     roles_metadata: "{{ lookup('file', 'roles_metadata.yml') | from_yaml }}"
-    ansible_roles_path: "/opt/ansible_roles"
+    ansible_roles_path: "/opt/bootstrap/ansible_roles"
