@@ -7,11 +7,5 @@ localhost ansible_connection=local
 [keystone_all]
 localhost ansible_connection=local
 
-[galera_all]
-localhost ansible_connection=local ansible_user=root
-
-[rabbitmq_all]
-localhost ansible_connection=local ansible_user=root
-
-[keystone_all]
-localhost ansible_connection=local ansible_user=root
+[guts_all]
+localhost ansible_connection=local
