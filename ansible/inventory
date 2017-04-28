@@ -1,13 +1,4 @@
-[dotfiles]
-localhost ansible_connection=local
-
-[vv]
-localhost ansible_connection=local
-
-[keystone]
-localhost ansible_connection=local
-
-[guts]
+[playbox_all]
 localhost ansible_connection=local
 
 [galera_all]

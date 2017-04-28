@@ -48,10 +48,11 @@
       delay: 10
       ignore_errors: true
 
-    - name: Update all packages to latest
+    - name: Update & upgrade all packages to latest
       apt:
         update_cache: yes
-      become: true
+        upgrade: yes
+      become: yes
 
     - name: Make sure tmux is installed
       apt:
@@ -59,7 +60,7 @@
         state: installed
       become: true
 
-    - name: Fetch opinionated `tmux.conf` at `~/.tmux.conf`
+    - name: Fetch opinionated tmux configuration at `~/.tmux.conf`
       get_url:
         url: https://raw.githubusercontent.com/rajalokan/dotfiles/master/files/tmux/tmux.conf
         dest: ~/.tmux.conf

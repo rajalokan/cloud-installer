@@ -1,0 +1,6 @@
+---
+
+- name: "PLAYBOX : Running roles for instance `playbox`"
+  hosts: playbox_all
+  roles:
+    - { role: rajalokan.dotfiles }

@@ -10,10 +10,15 @@
 #
 # # Set the role fetch mode to any option [galaxy, git-clone]
 # export ANSIBLE_ROLE_FETCH_MODE=${ANSIBLE_ROLE_FETCH_MODE:-galaxy}
+BASE_DIR="${BASE_DIR:-/opt}"
+BOOTSTRAP_DIR="${BOOTSTRAP_DIR:-${BASE_DIR}/bootstrap}"
+PROJECT_DIR="${BOOTSTRAP_DIR}/cloud-installer"
+
+ANSIBLE_RUNTIME_DIR="${ANSIBLE_RUNTIME_DIR:-${BOOTSTRAP_DIR}/ansible-runtime}"
 
 # The vars used to prepare the Ansible runtime venv
 PIP_OPTS+=" --upgrade"
-PIP_COMMAND="/opt/ansible-runtime/bin/pip"
+PIP_COMMAND="${ANSIBLE_RUNTIME_DIR}/bin/pip"
 
 # virtualenv vars
 VIRTUALENV_OPTIONS="--always-copy"
@@ -25,7 +30,7 @@ VIRTUALENV_OPTIONS="--always-copy"
 # ## Functions -----------------------------------------------------------------
 
 function bootstrap_ansible {
-    sudo chown -R ${USER}:${USER} /opt
+    sudo chown -R ${USER}:${USER} ${BASE_DIR}
     source_scripts_library
     GetOSVersion
     update_and_upgrade
@@ -38,9 +43,9 @@ function bootstrap_ansible {
 
 function ensure_ansible_always_runs_from_venv {
     # Ensure that Ansible binaries run from the venv
-    pushd /opt/ansible-runtime/bin
+    pushd ${ANSIBLE_RUNTIME_DIR}/bin
       for ansible_bin in $(ls -1 ansible*); do
-        sudo ln -sf /opt/ansible-runtime/bin/${ansible_bin} /usr/local/bin/${ansible_bin}
+        sudo ln -sf ${ANSIBLE_RUNTIME_DIR}/bin/${ansible_bin} /usr/local/bin/${ansible_bin}
       done
     popd
 }
@@ -63,9 +68,9 @@ function create_ansible_runtime_venv {
     PYTHON_VERSION="$($PYTHON_EXEC_PATH -c 'import sys; print(".".join(map(str, sys.version_info[:3])))')"
 
     # Create a Virtualenv for the Ansible runtime
-    if [[ ! -f /opt/ansible-runtime/bin/activate ]]; then
+    if [[ ! -f ${ANSIBLE_RUNTIME_DIR}/bin/activate ]]; then
         info_block "Create ansible-runtime virtualenv"
-        virtualenv --clear ${VIRTUALENV_OPTIONS} --system-site-packages --python="${PYTHON_EXEC_PATH}" /opt/ansible-runtime
+        virtualenv --clear ${VIRTUALENV_OPTIONS} --system-site-packages --python="${PYTHON_EXEC_PATH}" ${ANSIBLE_RUNTIME_DIR}
     fi
 }
 
@@ -93,12 +98,13 @@ function update_and_upgrade {
               VIRTUALENV_OPTIONS=""
             ;;
         Ubuntu)
-            # sudo apt-get update
-            DEBIAN_FRONTEND=noninteractive sudo apt-get -y install \
-              git python-all python-dev curl python2.7-dev build-essential \
-              libssl-dev libffi-dev netcat python-requests python-openssl python-pyasn1 \
-              python-netaddr python-prettytable python-crypto python-yaml \
-              python-virtualenv
+            sudo apt-get update
+            DEBIAN_FRONTEND=noninteractive sudo apt -y upgrade
+            # DEBIAN_FRONTEND=noninteractive sudo apt-get -y install \
+            #   git python-all python-dev curl python2.7-dev build-essential \
+            #   libssl-dev libffi-dev netcat python-requests python-openssl python-pyasn1 \
+            #   python-netaddr python-prettytable python-crypto python-yaml \
+            #   python-virtualenv
             ;;
     esac
 
