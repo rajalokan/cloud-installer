@@ -20,6 +20,7 @@ DEPLOYMENT_TYPE="${1:-playbox}"
 
 # TODO: Quickfix
 rm -rf ${BOOTSTRAP_DIR}
+rm -rf /opt/ansible_roles
 
 # Source library.sh if cloud-installer directory exists
 if [[ -d ${PROJECT_DIR} ]]; then

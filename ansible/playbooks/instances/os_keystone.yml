@@ -1,12 +1,3 @@
----
-
-# Run playbooks
-- name: "Run dotfiles"
-  hosts: keystone
-  roles:
-    - { role: rajalokan.dotfiles }
-    - { role: bootstrap_openstack }
-
       ## Run keystone
       #- name: "keystone_all: Running roles: keystone"
       #  hosts: galera_all

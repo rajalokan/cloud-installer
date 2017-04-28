@@ -1,0 +1,8 @@
+---
+
+# Run playbooks
+- name: "keystone : Running roles and tasks for instance `keystone`"
+  hosts: keystone_all
+  roles:
+    - { role: rajalokan.dotfiles }
+    - { role: bootstrap_openstack }

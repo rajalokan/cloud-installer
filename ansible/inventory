@@ -1,6 +1,12 @@
 [playbox_all]
 localhost ansible_connection=local
 
+[dockerbox_all]
+localhost ansible_connection=local
+
+[keystone_all]
+localhost ansible_connection=local
+
 [galera_all]
 localhost ansible_connection=local ansible_user=root
 
