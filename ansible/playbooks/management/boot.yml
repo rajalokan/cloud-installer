@@ -36,11 +36,11 @@
         hostname: "{{ SERVER_IP }}"
         groups: "{{ instance_name }}_bootstrap"
         ansible_ssh_private_key_file: "{{ PRIVATE_KEY_FILE }}"
-        ansible_ssh_user: ubuntu
+        ansible_ssh_user: "{{ SSH_USER }}"
 
 - name: "{{ instance_name | upper }} : Verify ssh access and run playbook within tmux"
   hosts: "{{ instance_name }}_bootstrap"
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - name: "Try to login to the instance `{{ instance_name }}`"
       raw: "/bin/ls"
@@ -48,26 +48,42 @@
       delay: 10
       ignore_errors: true
 
-    - name: Update & upgrade all packages to latest
+    - name: apt - Update & upgrade all packages to latest
       apt:
         update_cache: yes
         upgrade: yes
       become: yes
+      when:
+        - ansible_distribution | lower == "ubuntu"
 
-    - name: Make sure tmux is installed
-      apt:
+    - name: yum - Update & upgrade all packages to latest
+      yum:
+        name: '*'
+        state: latest
+      become: yes
+      when:
+        - ansible_distribution | lower == "centos"
+
+    - name: Ensure tmux is installed
+      package:
         name: tmux
-        state: installed
+        state: present
       become: true
+
+    - name: Check if ~/.tmux.conf already exists
+      stat:
+        path: ~/.tmux.conf
+      register: _st
 
     - name: Fetch opinionated tmux configuration at `~/.tmux.conf`
       get_url:
         url: https://raw.githubusercontent.com/rajalokan/dotfiles/master/files/tmux/tmux.conf
         dest: ~/.tmux.conf
         force: no
+      when: not _st.stat.exists
 
-    - name: Start a new tmux session and fetch bootstrap script
-      shell: tmux new -s bootstrap -d >/dev/null 2>&1 && echo "success" || echo "failure"
+    - name: Start a new tmux session
+      shell: tmux new -s bootstrap -n bootstrap -d >/dev/null 2>&1 && echo "success" || echo "failure"
 
     - name: "Fetch bootstrap script and execute it withing a tmux session `bootstrap`"
       shell: tmux send-keys -t bootstrap "rm -rf /tmp/bootstrap.sh; wget https://raw.githubusercontent.com/rajalokan/cloud-installer/master/scripts/bootstrap.sh -O /tmp/bootstrap.sh; chmod +x /tmp/bootstrap.sh; /tmp/bootstrap.sh {{ instance_name }}" C-m

@@ -43,9 +43,17 @@ function bootstrap_ansible {
 
 function ensure_ansible_always_runs_from_venv {
     # Ensure that Ansible binaries run from the venv
+    case ${os_VENDOR} in
+      Ubuntu)
+        python_bin_path="/usr/local/bin"
+        ;;
+      CentOS)
+        python_bin_path="/usr/bin"
+        ;;
+    esac
     pushd ${ANSIBLE_RUNTIME_DIR}/bin
       for ansible_bin in $(ls -1 ansible*); do
-        sudo ln -sf ${ANSIBLE_RUNTIME_DIR}/bin/${ansible_bin} /usr/local/bin/${ansible_bin}
+        sudo ln -sf ${ANSIBLE_RUNTIME_DIR}/bin/${ansible_bin} ${python_bin_path}/${ansible_bin}
       done
     popd
 }
@@ -89,8 +97,8 @@ function update_and_upgrade {
     # Install the base packages
     info_block "Update and install basic system packages"
     case ${os_VENDOR} in
-        centos|rhel)
-            yum -y install git python2 curl autoconf gcc-c++ \
+        CentOS|rhel)
+            sudo yum -y install git python2 curl autoconf gcc-c++ \
               python2-devel gcc libffi-devel nc openssl-devel \
               python-pyasn1 pyOpenSSL python-ndg_httpsclient \
               python-netaddr python-prettytable python-crypto PyYAML \

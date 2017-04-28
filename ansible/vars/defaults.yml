@@ -1,5 +1,6 @@
 # Defaults. Encrypted values are stored in vault file `default_vault.yml`
 IMAGE: "{{ IMAGE_ENC }}"
+SSH_USER: "{{ SSH_USER_ENC }}"
 FLAVOR: "{{ FLAVOR_ENC }}"
 NETWORK: "{{ NETWORK_ENC }}"
 KEY_NAME: "{{ KEY_NAME_ENC }}"
