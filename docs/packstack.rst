@@ -41,7 +41,7 @@ openstack network list
 ```
 
 ```
-openstack server create --image cirros --flavor m1.tiny --security-group default --key-name cloud --nic "net-id=$(openstack network show -f value -c id private)" trybox
+openstack server create --image cirros --flavor m1.small --security-group default --key-name cloud --nic "net-id=$(openstack network show -f value -c id private)" trybox
 openstack server list
 openstack ip floating add $(openstack ip floating create -f value -c ip public) trybox
 ```
