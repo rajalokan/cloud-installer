@@ -9,6 +9,8 @@
     - ../../vars/{{ instance_name }}_vault.yml
   tasks:
     - include: get_or_launch_instance.yml
+      tags:
+        - always
 
     - name: Waiting for instance to finish booting and ssh to be up
       wait_for:
@@ -17,12 +19,16 @@
         port=22
         delay=10
         timeout=600
+      tags:
+        - always
 
     - name: Remove any entry of this instance from known_hosts
       known_hosts:
         path: ~/.ssh/known_hosts
         name: "{{ SERVER_IP }}"
         state: absent
+      tags:
+        - always
 
     - name: Add this instance to known_hosts
       known_hosts:
@@ -30,6 +36,8 @@
         key: "{{ lookup('pipe', 'ssh-keyscan -t rsa {{ SERVER_IP }}') }}"
         name: "{{ SERVER_IP }}"
         state: present
+      tags:
+        - always
 
     - name: add server `{{ SERVER_IP }}` to ansible inventory
       add_host:
@@ -37,6 +45,8 @@
         groups: "{{ instance_name }}_bootstrap"
         ansible_ssh_private_key_file: "{{ PRIVATE_KEY_FILE }}"
         ansible_ssh_user: "{{ SSH_USER }}"
+      tags:
+        - always
 
 - name: "{{ instance_name | upper }} : Verify ssh access and run playbook within tmux"
   hosts: "{{ instance_name }}_bootstrap"
@@ -47,6 +57,8 @@
       retries: 5
       delay: 10
       ignore_errors: true
+      tags:
+        - always
 
     - name: apt - Update & upgrade all packages to latest
       apt:
@@ -55,6 +67,8 @@
       become: yes
       when:
         - ansible_distribution | lower == "ubuntu"
+      tags:
+        - always
 
     - name: yum - Update & upgrade all packages to latest
       yum:
@@ -63,17 +77,23 @@
       become: yes
       when:
         - ansible_distribution | lower == "centos"
+      tags:
+        - always
 
     - name: Ensure tmux is installed
       package:
         name: tmux
         state: present
       become: true
+      tags:
+        - orchestrate
 
     - name: Check if ~/.tmux.conf already exists
       stat:
         path: ~/.tmux.conf
       register: _st
+      tags:
+        - orchestrate
 
     - name: Fetch opinionated tmux configuration at `~/.tmux.conf`
       get_url:
@@ -81,9 +101,15 @@
         dest: ~/.tmux.conf
         force: no
       when: not _st.stat.exists
+      tags:
+        - orchestrate
 
     - name: Start a new tmux session
       shell: tmux new -s bootstrap -n bootstrap -d >/dev/null 2>&1 && echo "success" || echo "failure"
+      tags:
+        - orchestrate
 
-    - name: "Fetch bootstrap script and execute it withing a tmux session `bootstrap`"
+    - name: "Fetch bootstrap script and execute it within a tmux session `bootstrap`"
       shell: tmux send-keys -t bootstrap "rm -rf /tmp/bootstrap.sh; wget https://raw.githubusercontent.com/rajalokan/cloud-installer/master/scripts/bootstrap.sh -O /tmp/bootstrap.sh; chmod +x /tmp/bootstrap.sh; /tmp/bootstrap.sh {{ instance_name }}" C-m
+      tags:
+        - orchestrate

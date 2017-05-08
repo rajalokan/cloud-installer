@@ -22,7 +22,11 @@ if [[ "${DEPLOYMENT_ACTION}" == 'provision' ]]; then
     popd
 else
     # Launches VM and then runs playbooks on remote hosts under tmux session `bootstrap`
+    TAGS_OPTIONS=""
+    if [[ ${DEPLOYMENT_INSTNACE} != "blankbox" ]]; then
+        TAGS_OPTIONS="--tags orchestrate"
+    fi
     pushd "ansible"
-        ansible-playbook -e instance_name=${DEPLOYMENT_INSTNACE} ${VAULT_OPTIONS} playbooks/management/${DEPLOYMENT_ACTION}.yml
+        ansible-playbook ${TAGS_OPTIONS} -e instance_name=${DEPLOYMENT_INSTNACE} ${VAULT_OPTIONS} playbooks/management/${DEPLOYMENT_ACTION}.yml
     popd
 fi

@@ -1,5 +1,5 @@
 sudo yum -y upgrade
-sudo yum install -y centos-release-openstack-ocata
+sudo yum install -y centos-release-openstack-mitaka
 sudo yum install -y openstack-selinux
 
 sudo yum install -y cmake wget vim git

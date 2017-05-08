@@ -1,0 +1,8 @@
+---
+
+- name: "PACKSTACK : Run roles & tasks for setting up openstack using packstack"
+  hosts: localhost
+  connection: local
+  roles:
+    - { role: rajalokan.dotfiles }
+    - { role: bootstrap_packstack }
