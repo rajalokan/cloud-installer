@@ -1,0 +1,18 @@
+---
+
+- name: "JUMPBOX : Running tasks & roles for instance `jumpbox`"
+  hosts: jumpbox
+  tasks:
+    - name: "Update & Upgrade"
+      apt:
+        update_cache: yes
+        upgrade: yes
+      become: yes
+
+    - name: Copy private key
+      copy:
+        src: ~/.ssh/cloud.key
+        dest: "~/.ssh/cloud.key"
+        owner: ubuntu
+        group: ubuntu
+        mode: 0600

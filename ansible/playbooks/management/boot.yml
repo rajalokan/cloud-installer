@@ -1,6 +1,6 @@
 ---
 
-- name: "LOCALHOST: Setting up instance with following details. name= {{ instance_name }}"
+- name: "LOCALHOST: Setting up instance `{{ instance_name }}` "
   hosts: localhost
   connection: local
   vars_files:
@@ -86,6 +86,7 @@
         state: present
       become: true
       tags:
+        - stegen
         - orchestrate
 
     - name: Check if ~/.tmux.conf already exists
@@ -93,6 +94,7 @@
         path: ~/.tmux.conf
       register: _st
       tags:
+        - stegen
         - orchestrate
 
     - name: Fetch opinionated tmux configuration at `~/.tmux.conf`
@@ -102,14 +104,29 @@
         force: no
       when: not _st.stat.exists
       tags:
+        - stegen
         - orchestrate
 
     - name: Start a new tmux session
       shell: tmux new -s bootstrap -n bootstrap -d >/dev/null 2>&1 && echo "success" || echo "failure"
       tags:
+        - stegen
         - orchestrate
 
     - name: "Fetch bootstrap script and execute it within a tmux session `bootstrap`"
       shell: tmux send-keys -t bootstrap "rm -rf /tmp/bootstrap.sh; wget https://raw.githubusercontent.com/rajalokan/cloud-installer/master/scripts/bootstrap.sh -O /tmp/bootstrap.sh; chmod +x /tmp/bootstrap.sh; /tmp/bootstrap.sh {{ instance_name }}" C-m
       tags:
+        - stegen
         - orchestrate
+
+- name: "LOCALHOST: Detaching floating ip for instance `{{ instance_name }}` "
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: "Detach floating ip `{{ SERVER_IP }}` from `{{ instance_name }}`"
+      os_floating_ip:
+        state: absent
+        floating_ip_address: "{{ SERVER_IP }}"
+        server: "{{ instance_name }}"
+      tags:
+        - stegen

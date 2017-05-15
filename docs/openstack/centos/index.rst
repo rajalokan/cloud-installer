@@ -1,13 +1,21 @@
+sudo systemctl status NetworkManager
+sudo systemctl stop NetworkManager
+sudo systemctl disable NetworkManager
+
+
+sudo systemctl status network
+sudo systemctl enable network
+sudo systemctl restart network.service
+
 sudo yum -y upgrade
-sudo yum install -y centos-release-openstack-mitaka
-sudo yum install -y openstack-selinux
+sudo yum install -y centos-release-openstack-ocata
+sudo yum -y upgrade
+sudo yum install -y openstack-selinux python-openstackclient
 
 sudo yum install -y cmake wget vim git
 
-sudo yum install -y python-openstackclient
-
 PASSWORD=rajalokan
-IP_ADDR=$(hostname -I | cut -d" " -f2)
+IP_ADDR=$(hostname -I)
 echo "Password is : ${PASSWORD} and IP is : ${IP_ADDR}"
 
 sudo yum -y install mariadb mariadb-server python2-PyMySQL
