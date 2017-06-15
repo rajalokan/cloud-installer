@@ -5,8 +5,12 @@
 PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1'}
 
 function print_info {
-  PROC_NAME="- [ $@ ] -"
-  printf "\n%s%s\n" "$PROC_NAME" "${LINE:${#PROC_NAME}}"
+  RED='\033[0;33m'
+  NC='\033[0m' # No Color
+  # PROC_NAME="- [ $@ ] -"
+  PROC_NAME="${RED}- [ $@ ] -${NC}"
+  # printf "\n%s%s\n" "$PROC_NAME" "${LINE:${#PROC_NAME}}"
+  printf "$PROC_NAME\n"
 }
 
 function info_block {
@@ -15,8 +19,14 @@ function info_block {
   echo "${LINE}"
 }
 
+function _log {
+  RED='\033[0;35m'
+  NC='\033[0m' # No Color
+  printf "${RED}- $@${NC}\n"
+}
+
 function GetanotherVersion {
-    echo "Not Implemented"
+ echo "Not Implemented"
 }
 
 function get_pip {
@@ -299,6 +309,16 @@ function real_install_package {
 # install_package package [package ...]
 function install_package {
     # update_package_repo
-    info_block "Installing package $@"
+    _log "Installing package $@"
     real_install_package $@ || RETRY_UPDATE=True update_package_repo && real_install_package $@
+}
+
+function backup_if_present(){
+    if [ -L $1 ]; then
+        _log "Deleting link $1"
+        rm $1
+    elif [[ -f $1 ]] || [[ -d $2 ]]; then
+        _log "Backing up $1 to $1.bak.$(date +"%d_%m_%Y_%H%M%S")"
+        mv $1 $1.bak.$(date +"%d_%m_%Y_%H%M%S")
+    fi
 }
