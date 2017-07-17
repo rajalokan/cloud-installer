@@ -4,6 +4,10 @@
 # PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1 setuptools==33.1.1 wheel==0.29.0 '}
 PIP_INSTALL_OPTIONS=${PIP_INSTALL_OPTIONS:-'pip==9.0.1'}
 
+function is_sclib_imported {
+    [[ 0 ]]
+}
+
 function print_info {
   RED='\033[0;33m'
   NC='\033[0m' # No Color
@@ -33,6 +37,12 @@ function _error {
 
 function GetanotherVersion {
  echo "Not Implemented"
+}
+
+function _source_file {
+  if [[ ! -z $1 ]]; then
+    source "${CURRENT_DIR}/../${1}"
+  fi
 }
 
 function get_pip {
