@@ -8,18 +8,9 @@ info_block "" 2> /dev/null ||
     fi
     source ${SCLIB_PATH}
 
-if [[ $# < 1 ]]; then
-    _error "You must provide machine type to bootstap."
-    exit 0
-fi
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${CURRENT_DIR}/../cloud_common.sh
 
-_INSTANCE=${1:-}
+_log "Bootstraping gutsdev"
 
-case "${_INSTANCE}" in
-    stegen | gutsdev | psocata )
-        eval $(printf "%q\n" "scripts/provision/${_INSTANCE}.sh")
-        ;;
-    *)
-        _error "Invalid option"
-        ;;
-esac
+_bootstrap_dotfiles
