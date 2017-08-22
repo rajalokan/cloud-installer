@@ -1,6 +1,0 @@
----
-
-- hosts: localhost
-  tasks:
-    - name: "Sample command"
-      debug: msg="okan"

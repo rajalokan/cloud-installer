@@ -1,8 +1,0 @@
----
-
-- hosts: all
-  gather_facts: true
-
-  roles:
-    # - { role: dotfiles, __actions: ["vagrant_preconf"]}
-    - { role: bootstrap_docker }

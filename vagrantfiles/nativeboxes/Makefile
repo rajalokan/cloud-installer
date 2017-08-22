@@ -1,3 +1,0 @@
-
-update:
-	vagrant box update
